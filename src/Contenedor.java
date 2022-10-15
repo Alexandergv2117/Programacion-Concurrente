@@ -37,8 +37,7 @@ public class Contenedor {
         System.out.println("Se ha llenado el contenedor de " + PRODUCTO + " y ha sobrado " + sobrante + " unidades");
         lleno = true;
         return;
-      }
-      if (cantidad_actual + cantidad <= CAPACIDAD_MAX) {
+      } else if (cantidad_actual + cantidad <= CAPACIDAD_MAX) {
         cantidad_actual += cantidad;
         System.out.println("Se ha ingresado al contenedor de " + PRODUCTO + " " + cantidad + " unidades");
         if (cantidad_actual == CAPACIDAD_MAX) {
@@ -52,18 +51,21 @@ public class Contenedor {
     }
   }
 
-  public boolean retirarProductoDelContenedor(int cantidad__retirar) {
-    if (cantidad_actual - cantidad__retirar < 0) {
+  public boolean retirarProductoDelContenedor(int cantidad__retirar, String nombreComprador) {
+    int cantidad_actual_temp = cantidad_actual - cantidad__retirar;
+
+    if (cantidad_actual_temp < 0) {
       System.out.println("No hay suficiente producto en el contenedor de " + PRODUCTO);
       return false;
-    } else {
+    } else if (cantidad_actual_temp >= 0) {
       cantidad_actual -= cantidad__retirar;
-      System.out.println("Se ha retirado " + cantidad__retirar + " unidades del contenedor de " + PRODUCTO);
+      System.out.println(nombreComprador + " ha retirado " + cantidad__retirar + " unidades del contenedor de " + PRODUCTO);
       if (cantidad_actual == 0) {
         System.out.println("El contenedor de " + PRODUCTO + " está vacío");
-        return false;
+        lleno = false;
       }
       return true;
     }
+    return false;
   } 
 }

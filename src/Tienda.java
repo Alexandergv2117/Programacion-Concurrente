@@ -3,7 +3,7 @@ public class Tienda {
   Contenedor contenedor_arroz = new Contenedor("Arroz", 10);
   Contenedor contenedor_maiz = new Contenedor("Maiz", 10);
 
-  boolean contenedores_llenos = false;
+  public boolean contenedores_llenos = false;
 
   public synchronized void rellenarContenedor(String producto, int cantidad) {
     if (producto.equals("Frijol")) {
@@ -20,30 +20,28 @@ public class Tienda {
     }
   }
 
-  public synchronized boolean comprarProducto(String[] producto, int[] cantidad){
+  public synchronized boolean comprarProducto(String[] producto, int[] cantidad, String nombreComprador) {
     int i;
     int PRODUCTO_LENGTH = producto.length;
     boolean lista_de_compra_completa = true;
     for (i = 0; i < PRODUCTO_LENGTH; i++) {
       if(producto[i] == "Frijol"){
-        if(!contenedor_frijol.retirarProductoDelContenedor(cantidad[i])){
+        if(!contenedor_frijol.retirarProductoDelContenedor(cantidad[i], nombreComprador)){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
-          contenedor_frijol.setLleno(false);
+          contenedor_frijol.lleno = false;
         }
-      }
-      if(producto[i] == "Arroz"){
-        if(!contenedor_arroz.retirarProductoDelContenedor(cantidad[i])){
+      } else if(producto[i] == "Arroz"){
+        if(!contenedor_arroz.retirarProductoDelContenedor(cantidad[i], nombreComprador)){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
-          contenedor_arroz.setLleno(false);
+          contenedor_arroz.lleno = false;
         }
-      }
-      if(producto[i] == "Maiz"){
-        if(!contenedor_maiz.retirarProductoDelContenedor(cantidad[i])){
+      } else if(producto[i] == "Maiz"){
+        if(!contenedor_maiz.retirarProductoDelContenedor(cantidad[i], nombreComprador)){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
-          contenedor_maiz.setLleno(false);
+          contenedor_maiz.lleno = false;
         }
       }
     }
@@ -52,6 +50,10 @@ public class Tienda {
       return false;
     }
     return lista_de_compra_completa;
+  }
+
+  public void setContenedoresLlenos(boolean contenedores_llenos) {
+    this.contenedores_llenos = contenedores_llenos;
   }
 
   public boolean getContenedoresLlenos() {
