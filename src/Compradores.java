@@ -22,6 +22,12 @@ public class Compradores extends Thread {
         } else {
           System.out.println(nombre + " no ha podido comprar todos los productos");
         }
+      } else {
+        try {
+          wait();
+        } catch (Exception e) {
+          // TODO: handle exception
+        }
       }
     }
   }

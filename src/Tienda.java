@@ -29,20 +29,27 @@ public class Tienda {
         if(!contenedor_frijol.retirarProductoDelContenedor(cantidad[i])){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
+          contenedor_frijol.setLleno(false);
         }
       }
       if(producto[i] == "Arroz"){
         if(!contenedor_arroz.retirarProductoDelContenedor(cantidad[i])){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
+          contenedor_arroz.setLleno(false);
         }
       }
       if(producto[i] == "Maiz"){
         if(!contenedor_maiz.retirarProductoDelContenedor(cantidad[i])){
           lista_de_compra_completa = false;
           contenedores_llenos = false;
+          contenedor_maiz.setLleno(false);
         }
       }
+    }
+    if (!lista_de_compra_completa) {
+      notifyAll();
+      return false;
     }
     return lista_de_compra_completa;
   }

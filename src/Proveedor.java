@@ -16,6 +16,11 @@ public class Proveedor extends Thread {
         tienda.rellenarContenedor(PRODUCTO_SURTIDO, CAPACIDAD_DE_SURTIDO);
         System.out.println("El proveedor ha surtido " + PRODUCTO_SURTIDO  + " en la tienda\n");
       }
+      try {
+        wait();
+      } catch (Exception e) {
+        // TODO: handle exception
+      }
     }
   }
 }

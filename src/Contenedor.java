@@ -19,7 +19,15 @@ public class Contenedor {
     return cantidad_actual;
   }
 
-  public synchronized void rellenar(int cantidad) {
+  public void setLleno(boolean lleno) {
+    this.lleno = lleno;
+  }
+
+  public boolean getLleno() {
+    return lleno;
+  }
+
+  public void rellenar(int cantidad) {
     if (!lleno) {
       System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
       if (cantidad_actual + cantidad > CAPACIDAD_MAX) {
@@ -44,7 +52,7 @@ public class Contenedor {
     }
   }
 
-  public synchronized boolean retirarProductoDelContenedor(int cantidad__retirar) {
+  public boolean retirarProductoDelContenedor(int cantidad__retirar) {
     if (cantidad_actual - cantidad__retirar < 0) {
       System.out.println("No hay suficiente producto en el contenedor de " + PRODUCTO);
       return false;
