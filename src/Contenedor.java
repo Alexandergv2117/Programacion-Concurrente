@@ -27,7 +27,7 @@ public class Contenedor {
     return lleno;
   }
 
-  public void rellenar(int cantidad) {
+  public synchronized void rellenar(int cantidad) {
     if (!lleno) {
       System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
       if (cantidad_actual + cantidad > CAPACIDAD_MAX) {
@@ -51,7 +51,7 @@ public class Contenedor {
     }
   }
 
-  public boolean retirarProductoDelContenedor(int cantidad__retirar, String nombreComprador) {
+  public synchronized boolean retirarProductoDelContenedor(int cantidad__retirar, String nombreComprador) {
     int cantidad_actual_temp = cantidad_actual - cantidad__retirar;
 
     if (cantidad_actual_temp < 0) {

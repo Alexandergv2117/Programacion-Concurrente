@@ -52,15 +52,15 @@ public class Tienda {
     return lista_de_compra_completa;
   }
 
-  public void setContenedoresLlenos(boolean contenedores_llenos) {
+  public synchronized void setContenedoresLlenos(boolean contenedores_llenos) {
     this.contenedores_llenos = contenedores_llenos;
   }
 
-  public boolean getContenedoresLlenos() {
+  public synchronized boolean getContenedoresLlenos() {
     return contenedores_llenos;
   }
 
-  public boolean getContenedorLleno(String producto) {
+  public synchronized boolean getContenedorLleno(String producto) {
     if (producto.equals("Frijol")) {
       return contenedor_frijol.lleno;
     } else if (producto.equals("Arroz")) {
