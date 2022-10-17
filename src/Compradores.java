@@ -24,7 +24,6 @@ public class Compradores extends Thread {
         }
       } else {
         try {
-          // System.out.println("No hay suficientes productos en la tienda");
           wait();
         } catch (Exception e) {
           

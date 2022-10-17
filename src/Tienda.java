@@ -49,6 +49,12 @@ public class Tienda {
       notifyAll();
       return false;
     }
+
+    if(contenedor_frijol.cantidad_actual == 0 && contenedor_arroz.cantidad_actual == 0 && contenedor_maiz.cantidad_actual == 0){
+      contenedores_llenos = false;
+      notifyAll();
+    }
+
     return lista_de_compra_completa;
   }
 
