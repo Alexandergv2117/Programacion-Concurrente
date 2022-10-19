@@ -4,6 +4,8 @@ public class Proveedor extends Thread {
   int[] CAPACIDAD_DE_SURTIDO;
   int PRODUCTO_SURTIDO_LENGTH;
 
+  boolean isRunning = false;
+
   Tienda tienda;
 
   public Proveedor(String nombre, String[] producto_surtido, int[] capacidad_de_surtido, Tienda tienda) {
@@ -23,8 +25,11 @@ public class Proveedor extends Thread {
             System.out.println("El "+ this.NOMBRE + " ha surtido " + PRODUCTO_SURTIDO[i]  + " en la tienda\n");
           }
         }
-      } else {
-        //System.out.println("La tienda esta llena, el " + this.NOMBRE + " no puede surtir mas productos\n");
+        isRunning = tienda.getContenedoresLlenos();
+      } 
+      if (isRunning) {
+        isRunning = !isRunning;
+        System.out.println("La tienda esta llena, el " + this.NOMBRE + " no puede surtir mas productos\n");
         try {
           wait();
         } catch (Exception e) {
