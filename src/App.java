@@ -2,9 +2,10 @@ public class App {
     public static void main(String[] args) throws Exception {
         Tienda tienda = new Tienda();
 
-        Proveedor proveedor1 = new Proveedor("Frijol", 1, tienda);
-        Proveedor proveedor2 = new Proveedor("Arroz", 5, tienda);
-        Proveedor proveedor3 = new Proveedor("Maiz", 10, tienda);
+        Proveedor proveedor1 = new Proveedor("Carlos",new String[] { "Frijol", "Arroz" }, new int[] { 10, 10 }, tienda);
+        Proveedor proveedor2 = new Proveedor("Hector", new String[] { "Frijol", "Maiz" }, new int[] { 10, 10 }, tienda);
+        Proveedor proveedor3 = new Proveedor("Beto", new String[] { "Maiz", "Arroz" }, new int[] { 10, 10 }, tienda);
+        Proveedor proveedor4 = new Proveedor("Joe", new String[] { "Frijol", "Arroz" }, new int[] { 10, 10 }, tienda);
 
         String[] productosAlex = {"Frijol"};
         int[] cantidadesAlex = {1};
@@ -35,6 +36,7 @@ public class App {
         proveedor1.start();
         proveedor2.start();
         proveedor3.start();
+        proveedor4.start();
 
         comprador1.start();
         comprador2.start();
