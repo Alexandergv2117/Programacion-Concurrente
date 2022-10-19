@@ -1,3 +1,5 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Proveedor extends Thread {
   String NOMBRE;
   String[] PRODUCTO_SURTIDO;
@@ -7,17 +9,20 @@ public class Proveedor extends Thread {
   boolean isRunning = false;
 
   Tienda tienda;
+  ReentrantLock lock;
 
-  public Proveedor(String nombre, String[] producto_surtido, int[] capacidad_de_surtido, Tienda tienda) {
+  public Proveedor(String nombre, String[] producto_surtido, int[] capacidad_de_surtido, Tienda tienda, ReentrantLock lock) {
     this.NOMBRE = nombre;
     this.PRODUCTO_SURTIDO = producto_surtido;
     this.CAPACIDAD_DE_SURTIDO = capacidad_de_surtido;
     this.tienda = tienda;
     this.PRODUCTO_SURTIDO_LENGTH = producto_surtido.length;
+    this.lock = lock;
   }
 
   public void run() {
     while (true) {
+      lock.lock();
       if (!tienda.getContenedoresLlenos()) {
         for (int i = 0; i < PRODUCTO_SURTIDO_LENGTH; i++) {
           if (!tienda.getContenedorLleno(PRODUCTO_SURTIDO[i])) {
@@ -27,6 +32,7 @@ public class Proveedor extends Thread {
         }
         isRunning = tienda.getContenedoresLlenos();
       } 
+      lock.unlock();
       if (isRunning) {
         isRunning = !isRunning;
         System.out.println("La tienda esta llena, el " + this.NOMBRE + " no puede surtir mas productos\n");

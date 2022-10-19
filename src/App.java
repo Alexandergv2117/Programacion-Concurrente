@@ -1,11 +1,14 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 public class App {
     public static void main(String[] args) throws Exception {
         Tienda tienda = new Tienda();
+        ReentrantLock lock = new ReentrantLock();
 
-        Proveedor proveedor1 = new Proveedor("Carlos",new String[] { "Frijol", "Arroz" }, new int[] { 10, 10 }, tienda);
-        Proveedor proveedor2 = new Proveedor("Hector", new String[] { "Frijol", "Maiz" }, new int[] { 10, 10 }, tienda);
-        Proveedor proveedor3 = new Proveedor("Beto", new String[] { "Maiz", "Arroz" }, new int[] { 10, 10 }, tienda);
-        Proveedor proveedor4 = new Proveedor("Joe", new String[] { "Frijol", "Arroz" }, new int[] { 10, 10 }, tienda);
+        Proveedor proveedor1 = new Proveedor("Carlos",new String[] { "Frijol", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
+        Proveedor proveedor2 = new Proveedor("Hector", new String[] { "Frijol", "Maiz" }, new int[] { 1, 1 }, tienda, lock);
+        Proveedor proveedor3 = new Proveedor("Beto", new String[] { "Maiz", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
+        Proveedor proveedor4 = new Proveedor("Joe", new String[] { "Frijol", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
 
         String[] productosAlex = {"Frijol"};
         int[] cantidadesAlex = {1};
