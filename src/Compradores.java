@@ -17,11 +17,6 @@ public class Compradores extends Thread {
     while (!lista_de_compra_completa) {
       if (tienda.getContenedoresLlenos()) {
         lista_de_compra_completa = tienda.comprarProducto(productos, cantidades, this.nombre);
-        if (lista_de_compra_completa) {
-          System.out.println(nombre + " ha comprado todos los productos");
-        } else {
-          System.out.println(nombre + " no ha podido comprar todos los productos");
-        }
       } else {
         try {
           wait();
