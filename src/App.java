@@ -5,10 +5,10 @@ public class App {
         Tienda tienda = new Tienda();
         ReentrantLock lock = new ReentrantLock();
 
-        Proveedor proveedor1 = new Proveedor("Carlos",new String[] { "Frijol", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
-        Proveedor proveedor2 = new Proveedor("Hector", new String[] { "Frijol", "Maiz" }, new int[] { 1, 1 }, tienda, lock);
-        Proveedor proveedor3 = new Proveedor("Beto", new String[] { "Maiz", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
-        Proveedor proveedor4 = new Proveedor("Joe", new String[] { "Frijol", "Arroz" }, new int[] { 1, 1 }, tienda, lock);
+        Proveedor proveedor1 = new Proveedor("Carlos",new String[] { "Frijol", "Arroz" }, new int[] { 4, 6 }, tienda, lock);
+        Proveedor proveedor2 = new Proveedor("Hector", new String[] { "Frijol", "Maiz" }, new int[] { 4, 3 }, tienda, lock);
+        Proveedor proveedor3 = new Proveedor("Beto", new String[] { "Maiz", "Arroz" }, new int[] { 6, 5 }, tienda, lock);
+        Proveedor proveedor4 = new Proveedor("Joe", new String[] { "Frijol", "Arroz" }, new int[] { 2, 1 }, tienda, lock);
 
         String[] productosAlex = {"Frijol"};
         int[] cantidadesAlex = {1};

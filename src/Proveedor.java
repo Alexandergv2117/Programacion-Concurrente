@@ -23,7 +23,7 @@ public class Proveedor extends Thread {
   public void run() {
     while (true) {
       lock.lock();
-      if (!tienda.getContenedoresLlenos()) {
+      if (!tienda.getContenedoresLlenos() && tienda.entradaProveedores) {
         for (int i = 0; i < PRODUCTO_SURTIDO_LENGTH; i++) {
           if (!tienda.getContenedorLleno(PRODUCTO_SURTIDO[i])) {
             tienda.rellenarContenedor(PRODUCTO_SURTIDO[i], CAPACIDAD_DE_SURTIDO[i]);

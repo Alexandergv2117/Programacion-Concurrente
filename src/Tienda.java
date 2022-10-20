@@ -4,6 +4,7 @@ public class Tienda {
   Contenedor contenedor_maiz = new Contenedor("Maiz", 10);
 
   public boolean contenedores_llenos = false;
+  public boolean entradaProveedores = true;
 
   public synchronized void rellenarContenedor(String producto, int cantidad) {
     if (producto.equals("Frijol")) {
