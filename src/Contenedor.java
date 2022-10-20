@@ -55,7 +55,7 @@ public class Contenedor {
     int cantidad_actual_temp = cantidad_actual - cantidad__retirar;
 
     if (cantidad_actual_temp < 0) {
-      System.out.println("No hay suficiente producto en el contenedor de " + PRODUCTO);
+      System.out.println("No hay suficiente producto en el contenedor de " + PRODUCTO + " para " + nombreComprador + " (" + cantidad_actual + " unidades)\n");
       return false;
     } else if (cantidad_actual_temp >= 0) {
       cantidad_actual -= cantidad__retirar;

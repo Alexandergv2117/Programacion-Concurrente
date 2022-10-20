@@ -21,7 +21,7 @@ public class Tienda {
     }
   }
 
-  public boolean comprarProducto(String[] producto, int[] cantidad, String nombreComprador) {
+  public synchronized boolean comprarProducto(String[] producto, int[] cantidad, String nombreComprador) {
     int i;
     int PRODUCTO_LENGTH = producto.length;
     boolean lista_de_compra_completa = true;
@@ -52,7 +52,7 @@ public class Tienda {
       //notifyAll();
       return false;
     } else {
-      System.out.println(nombreComprador + " ha comprado todos los productos");
+      System.out.println(nombreComprador + " ha comprado todos los productos\n");
     }
 
     if(contenedor_frijol.cantidad_actual == 0 && contenedor_arroz.cantidad_actual == 0 && contenedor_maiz.cantidad_actual == 0){

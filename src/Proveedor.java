@@ -26,6 +26,7 @@ public class Proveedor extends Thread {
       if (!tienda.getContenedoresLlenos() && tienda.entradaProveedores) {
         for (int i = 0; i < PRODUCTO_SURTIDO_LENGTH; i++) {
           if (!tienda.getContenedorLleno(PRODUCTO_SURTIDO[i])) {
+            System.out.println("\nEl proveedor " + NOMBRE + " esta surtiendo el producto " + PRODUCTO_SURTIDO[i]);
             tienda.rellenarContenedor(PRODUCTO_SURTIDO[i], CAPACIDAD_DE_SURTIDO[i]);
             System.out.println("El "+ this.NOMBRE + " ha surtido " + PRODUCTO_SURTIDO[i]  + " en la tienda\n");
           }
@@ -36,11 +37,6 @@ public class Proveedor extends Thread {
       if (isRunning) {
         isRunning = !isRunning;
         System.out.println("La tienda esta llena, el " + this.NOMBRE + " no puede surtir mas productos\n");
-        try {
-          wait();
-        } catch (Exception e) {
-          // TODO: handle exception
-        }
       }
     }
   }
