@@ -6,7 +6,7 @@ public class Tienda {
   public boolean contenedores_llenos = false;
   public boolean entradaProveedores = true;
 
-  public synchronized void rellenarContenedor(String producto, int cantidad) {
+  public void rellenarContenedor(String producto, int cantidad) {
     if (producto.equals("Frijol")) {
       contenedor_frijol.rellenar(cantidad);
     } else if (producto.equals("Arroz")) {
@@ -17,7 +17,7 @@ public class Tienda {
 
     if (contenedor_frijol.lleno && contenedor_arroz.lleno && contenedor_maiz.lleno) {
       contenedores_llenos = true;
-      notifyAll();
+      notifyAllCompradores();
     }
   }
 
@@ -80,5 +80,9 @@ public class Tienda {
       return contenedor_maiz.lleno;
     }
     return false;
+  }
+
+  public synchronized void notifyAllCompradores() {
+    notifyAll();
   }
 }
