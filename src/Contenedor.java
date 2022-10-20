@@ -29,7 +29,6 @@ public class Contenedor {
 
   public void rellenar(int cantidad) {
     if (!lleno) {
-      System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
       if (cantidad_actual + cantidad > CAPACIDAD_MAX) {
         sobrante = (cantidad_actual + cantidad) - CAPACIDAD_MAX;
         cantidad_actual = CAPACIDAD_MAX;
@@ -39,6 +38,7 @@ public class Contenedor {
         return;
       } else if (cantidad_actual + cantidad <= CAPACIDAD_MAX) {
         cantidad_actual += cantidad;
+        System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
         System.out.println("Se ha ingresado al contenedor de " + PRODUCTO + " " + cantidad + " unidades");
         if (cantidad_actual == CAPACIDAD_MAX) {
           System.out.println("El contenedor de " + PRODUCTO + " ya está lleno");

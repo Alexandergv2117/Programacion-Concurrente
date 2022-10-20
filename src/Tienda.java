@@ -47,12 +47,12 @@ public class Tienda {
       }
     }
     if (!lista_de_compra_completa) {
-      System.out.println(nombreComprador + " no ha podido comprar todos los productos");
+      System.out.println(nombreComprador + " no ha podido comprar todos los productos de su lista");
       contenedores_llenos = false;
       //notifyAll();
       return false;
     } else {
-      System.out.println(nombreComprador + " ha comprado todos los productos\n");
+      System.out.println(nombreComprador + " ha comprado todos los productos de su lista\n");
     }
 
     if(contenedor_frijol.cantidad_actual == 0 && contenedor_arroz.cantidad_actual == 0 && contenedor_maiz.cantidad_actual == 0){
