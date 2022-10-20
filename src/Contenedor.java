@@ -27,19 +27,28 @@ public class Contenedor {
     return lleno;
   }
 
-  public synchronized void rellenar(int cantidad) {
+  public synchronized void rellenar(int cantidad, String nombre) {
     if (!lleno) {
-      System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
-      if (cantidad_actual + cantidad > CAPACIDAD_MAX) {
+      if (cantidad_actual + cantidad > CAPACIDAD_MAX) { // contenedor lleno
         sobrante = (cantidad_actual + cantidad) - CAPACIDAD_MAX;
         cantidad_actual = CAPACIDAD_MAX;
+        System.out.println("El proveedor " + nombre + " llego a la tienda con " + cantidad +" de " + PRODUCTO);
+        System.out.println("El proveedor "+ nombre +" esta surtiendo "+ cantidad + " de "+ PRODUCTO + " en la tienda");
+        System.out.println("El proveedor" + nombre + " ha terminado de surtir " + PRODUCTO + " en la tienda \n");
         System.out.println("Se ha ingresado al contenedor de " + PRODUCTO + " " + cantidad + " unidades");
-        System.out.println("Se ha llenado el contenedor de " + PRODUCTO + " y ha sobrado " + sobrante + " unidades");
+        System.out.println("Se ha llenado el contenedor de " + PRODUCTO + " y ha sobrado " + sobrante + " unidades\n");
         lleno = true;
         return;
       } else if (cantidad_actual + cantidad <= CAPACIDAD_MAX) {
         cantidad_actual += cantidad;
-        System.out.println("Se ha ingresado al contenedor de " + PRODUCTO + " " + cantidad + " unidades");
+        
+      System.out.println("Llenando contenedor de " + PRODUCTO + " ...");
+        
+        System.out.println("El proveedor " + nombre + " llego a la tienda con " + cantidad +" de " + PRODUCTO);
+        System.out.println("El proveedor "+ nombre +" esta surtiendo "+ cantidad + " de "+ PRODUCTO + " en la tienda");
+        System.out.println("El proveedor" + nombre + " ha terminado de surtir " + PRODUCTO + " en la tienda \n");
+        System.out.println("Se ha ingresado al contenedor de " + PRODUCTO + " " + cantidad + " unidades\n");
+
         if (cantidad_actual == CAPACIDAD_MAX) {
           System.out.println("El contenedor de " + PRODUCTO + " ya está lleno");
           lleno = true;
@@ -47,7 +56,7 @@ public class Contenedor {
         }
       }
     } else {
-      System.out.println("El contenedor de " + PRODUCTO + " ya está lleno");
+      System.out.println("El contenedor de " + PRODUCTO + " ya está lleno\n");
     }
   }
 

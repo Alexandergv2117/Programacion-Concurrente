@@ -5,13 +5,13 @@ public class Tienda {
 
   public boolean contenedores_llenos = false;
 
-  public synchronized void rellenarContenedor(String producto, int cantidad) {
+  public synchronized void rellenarContenedor(String nombre, String producto, int cantidad) {
     if (producto.equals("Frijol")) {
-      contenedor_frijol.rellenar(cantidad);
+      contenedor_frijol.rellenar(cantidad, nombre);
     } else if (producto.equals("Arroz")) {
-      contenedor_arroz.rellenar(cantidad);
+      contenedor_arroz.rellenar(cantidad, nombre);
     } else if (producto.equals("Maiz")) {
-      contenedor_maiz.rellenar(cantidad);
+      contenedor_maiz.rellenar(cantidad, nombre);
     }
 
     if (contenedor_frijol.lleno && contenedor_arroz.lleno && contenedor_maiz.lleno) {
@@ -46,11 +46,11 @@ public class Tienda {
       }
     }
     if (!lista_de_compra_completa) {
-      System.out.println(nombreComprador + " no ha podido comprar todos los productos");
-      notifyAll();
+      System.out.println(nombreComprador + " no ha podido comprar todos los \n");
+      // notifyAll();
       return false;
     } else {
-      System.out.println(nombreComprador + " ha comprado todos los productos");
+      System.out.println(nombreComprador + " ha comprado todos los productos de su lista\n");
     }
 
     if(contenedor_frijol.cantidad_actual == 0 && contenedor_arroz.cantidad_actual == 0 && contenedor_maiz.cantidad_actual == 0){
