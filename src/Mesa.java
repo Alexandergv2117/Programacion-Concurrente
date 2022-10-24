@@ -33,4 +33,26 @@ public class Mesa {
     System.out.println("El mesero sirve la comida al lugar " + (i + 1));
     comidaServida[i] = true;
   }
+
+  public boolean mesaLlena() {
+    boolean llena = true;
+    for (int i = 0; i < sillas.length; i++) {
+      if (!sillas[i]) {
+        llena = false;
+        break;
+      }
+    }
+    return llena;
+  }
+
+  public boolean comidaServida() {
+    boolean servida = true;
+    for (int i = 0; i < comidaServida.length; i++) {
+      if (!comidaServida[i]) {
+        servida = false;
+        break;
+      }
+    }
+    return servida;
+  }
 }

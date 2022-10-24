@@ -27,6 +27,7 @@ public class Cliente extends Thread {
         lugar = sentarse();
         cubiertoAdicional = lugar + 1;
         sentado = true;
+        System.out.println(nombre + " se sienta en el lugar " + (lugar + 1)+ "\n");
         lock.unlock();
       }
       lock.lock();
@@ -34,7 +35,7 @@ public class Cliente extends Thread {
         mesa.setCubierto(lugar, false);
         mesa.setCubierto(cubiertoAdicional, false);
         System.out.println("\n" + nombre + " come en el lugar " + (lugar + 1));
-        System.out.println("Con el cubierto del lugar " + (lugar + 1) + " y el cubierto del lugar " + (cubiertoAdicional + 1));
+        System.out.println("Con el cubierto del lugar " + (lugar + 1) + " y el cubierto del lugar " + (ajustarCubierto(cubiertoAdicional) + 1));
         lock.unlock();
         try {
           sleep(random.nextInt(2000, 10000)); // Simula el tiempo que tarda en comer
@@ -46,6 +47,9 @@ public class Cliente extends Thread {
         mesa.setCubierto(cubiertoAdicional, true);
         termino = true;
         System.out.println("\n" + nombre + " termino de comer");
+        System.out.println("deja los cubiertos en el lugar " + (lugar + 1) + " y el lugar " + (ajustarCubierto(cubiertoAdicional) + 1));
+        System.out.println("se levanta del lugar " + (lugar + 1) + "\ny se va.");
+
       }
       lock.unlock();
     }
@@ -61,5 +65,12 @@ public class Cliente extends Thread {
       }
     }
     return lugar;
+  }
+
+  public int ajustarCubierto(int i) {
+    if (i == mesa.cubiertos.length) {
+      i = 0;
+    }
+    return i;
   }
 }

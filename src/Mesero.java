@@ -3,6 +3,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Mesero extends Thread {
   Mesa mesa;
   ReentrantLock lock;
+  boolean termino = false;
 
   public Mesero(Mesa mesa, ReentrantLock lock) {
     this.mesa = mesa;
@@ -10,10 +11,17 @@ public class Mesero extends Thread {
   }
 
   public void run() {
-    lock.lock();
-    for (int i = 0; i < mesa.cubiertos.length; i++) {
-      
+    while (!termino) {
+      if (mesa.mesaLlena()) {
+        lock.lock();
+        for (int i = 0; i < mesa.sillas.length; i++) {
+          if (mesa.sillas[i] && !mesa.comidaServida[i]) {
+            mesa.servir(i);
+          }
+          termino = mesa.comidaServida();
+        }
+        lock.unlock();
+      }
     }
-    lock.unlock();
   }
 }
