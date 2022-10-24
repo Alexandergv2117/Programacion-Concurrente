@@ -12,7 +12,7 @@ public class Mesero extends Thread {
   public void run() {
     lock.lock();
     for (int i = 0; i < mesa.cubiertos.length; i++) {
-      mesa.servir(i);
+      
     }
     lock.unlock();
   }

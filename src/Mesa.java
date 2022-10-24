@@ -2,13 +2,16 @@ public class Mesa {
   String Mesa;
   boolean[] cubiertos;
   boolean[] comidaServida;
+  boolean[] sillas;
 
   public Mesa(String nombreMesa, int cantidad) {
     cubiertos = new boolean[cantidad];
     comidaServida = new boolean[cantidad];
+    sillas = new boolean[cantidad];
     for (int i = 0; i < cantidad; i++) {
       cubiertos[i] = true;
       comidaServida[i] = false;
+      sillas[i] = false;
     }
   }
 

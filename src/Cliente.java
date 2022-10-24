@@ -9,19 +9,26 @@ public class Cliente extends Thread {
   String nombre;
   int lugar;
   int cubiertoAdicional;
+  
+  boolean sentado = false;
 
-  public Cliente(Mesa mesa, String nombre, int lugar, ReentrantLock lock, Random random) {
+  public Cliente(Mesa mesa, String nombre, ReentrantLock lock, Random random) {
     this.mesa = mesa;
     this.lock = lock;
     this.random = random;
     this.nombre = nombre;
-    this.lugar = lugar;
-    this.cubiertoAdicional = lugar + 1;
   }
 
   public void run() {
     boolean termino = false;
     while (!termino) {
+      if (!sentado) {
+        lock.lock();
+        lugar = sentarse();
+        cubiertoAdicional = lugar + 1;
+        sentado = true;
+        lock.unlock();
+      }
       lock.lock();
       if (mesa.comidaServida[lugar] && mesa.getCubierto(lugar) && mesa.getCubierto(cubiertoAdicional)) {
         mesa.setCubierto(lugar, false);
@@ -42,5 +49,17 @@ public class Cliente extends Thread {
       }
       lock.unlock();
     }
+  }
+
+  public synchronized int sentarse() {
+    int lugar = 0;
+    for (int i = 0; i < mesa.sillas.length; i++) {
+      if (!mesa.sillas[i]) {
+        mesa.sillas[i] = true;
+        lugar = i;
+        break;
+      }
+    }
+    return lugar;
   }
 }
