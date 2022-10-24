@@ -26,8 +26,8 @@ public class Cliente extends Thread {
       if (mesa.comidaServida[lugar] && mesa.getCubierto(lugar) && mesa.getCubierto(cubiertoAdicional)) {
         mesa.setCubierto(lugar, false);
         mesa.setCubierto(cubiertoAdicional, false);
-        System.out.println("\n" + nombre + " come en el lugar " + lugar);
-        System.out.println("Con el cubierto del lugar " + lugar + " y el cubierto del lugar " + cubiertoAdicional);
+        System.out.println("\n" + nombre + " come en el lugar " + (lugar + 1));
+        System.out.println("Con el cubierto del lugar " + (lugar + 1) + " y el cubierto del lugar " + (cubiertoAdicional + 1));
         lock.unlock();
         try {
           sleep(random.nextInt(2000, 10000)); // Simula el tiempo que tarda en comer
