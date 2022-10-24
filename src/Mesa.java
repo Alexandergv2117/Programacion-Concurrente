@@ -26,10 +26,8 @@ public class Mesa {
     return cubiertos[i];
   }
 
-  public synchronized void servir(int i) {
-    if (getCubierto(i)) {
-      System.out.println("El mesero sirve la comida al lugar " + (i + 1));
-      comidaServida[i] = true;
-    }
+  public void servir(int i) {
+    System.out.println("El mesero sirve la comida al lugar " + (i + 1));
+    comidaServida[i] = true;
   }
 }
