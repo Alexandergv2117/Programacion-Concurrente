@@ -31,13 +31,8 @@ public class Proveedor extends Thread {
             System.out.println("El "+ this.NOMBRE + " ha surtido " + PRODUCTO_SURTIDO[i]  + " en la tienda\n");
           }
         }
-        isRunning = tienda.getContenedoresLlenos();
       } 
       lock.unlock();
-      if (isRunning) {
-        isRunning = !isRunning;
-        System.out.println("La tienda esta llena, el " + this.NOMBRE + " no puede surtir mas productos\n");
-      }
     }
   }
 }
