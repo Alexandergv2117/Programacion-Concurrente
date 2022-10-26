@@ -24,15 +24,16 @@ public class Providers extends Thread {
   public void run() {
     while (true) {
       try {
-        if (store.isFullEntryProviders && !store.isFullContainers) {
+        if (store.getIsFullEntryProviders() && !store.getIsFullContainers()) {
           semaphore.acquire();
+          store.setIsFullEntryProviders(false);
           System.out.println("-------------------------------------------------------------");
           System.out.println("\nEl proveedor " + name + " ha entrado a la tienda");
           for (int i = 0; i < productsLength; i++) {
             store.addProductToContainer(products[i], (assortmentCapacity[i] * season.getCurrentMultiplier()), name);
           }
           System.out.println("\nEl proveedor " + name + " ha salido de la tienda");
-          store.isFullEntryProviders = true;
+          store.setIsFullEntryProviders(true);
           semaphore.release();
         }
         sleep(1000);

@@ -14,18 +14,17 @@ public class Store {
 
   public void addProductToContainer(String product, double quantity, String provider) {
     for (int i = 0; i < containers.length; i++) {
-      if (containers[i].getProduct().equals(product) && !containers[i].getIsFull()) {
+      if ((containers[i].getProduct().equals(product)) && (!containers[i].getIsFull())) {
         System.out.println("\nEl proveedor " + provider + " esta ingresando " + product + " al contenedor");
         quantity = containers[i].addProduct(quantity);
       } else if (containers[i].getProduct().equals(product) && containers[i].getIsFull()) {
         System.out.println("El contenedor de " + product + " está lleno");
       }
     }
-
-    isFullContainers = ContainersAreFull();
+    setIsFullContainers(ContainersAreFull());
   }
 
-  public boolean buyProducts(String name, String[] products, double[] quantity) {
+  public synchronized boolean buyProducts(String name, String[] products, double[] quantity) {
     int productsLength = products.length;
     int containersLength = containers.length;
     boolean fullShoppingList = true;
@@ -36,13 +35,14 @@ public class Store {
           if (!containers[j].retireProduct(quantity[i], name)){
             fullShoppingList = false;
             containers[j].setIsFull(false);
+            setIsFullContainers(fullShoppingList);
           }
         }
       }
     }
 
     if (!fullShoppingList){
-      isFullContainers = false;
+      setIsFullContainers(false);
       System.out.println("No se pudo completar la compra de " + name);
       return false;
     }
@@ -58,5 +58,21 @@ public class Store {
       }
     }
     return true;
+  }
+
+  public void setIsFullContainers(boolean isFullContainers) {
+    this.isFullContainers = isFullContainers;
+  }
+
+  public boolean getIsFullContainers() {
+    return isFullContainers;
+  }
+
+  public void setIsFullEntryProviders(boolean isFullEntryProviders) {
+    this.isFullEntryProviders = isFullEntryProviders;
+  }
+
+  public boolean getIsFullEntryProviders() {
+    return isFullEntryProviders;
   }
 }

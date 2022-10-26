@@ -11,16 +11,18 @@ public class Container {
   }
 
   public boolean retireProduct(double quantity, String name) {
-    if (quantity > currentCapacity) {
-      System.out.println("No hay suficiente producto en el contenedor para " + name);
+    double temporaryCurrentcCpacity = currentCapacity - quantity;
+    if (temporaryCurrentcCpacity < 0) {
+      System.out.println("No hay suficiente producto en el contenedor de " + getProduct() + " para " + name);
+      setIsFull(false);
       return false;
     } 
-    if (quantity >= currentCapacity) {
+    if (temporaryCurrentcCpacity >= 0) {
       currentCapacity -= quantity;
       System.out.println(name + " ha retirado " + quantity + " de " + storedProduct);
       if (currentCapacity == 0) {
         System.out.println("El contenedor de " + storedProduct + " está vacío");
-        isFull = false;
+        setIsFull(false);
       }
       return true;
     }
@@ -34,7 +36,7 @@ public class Container {
       return quatity;
     }
 
-    if (currentCapacity + quatity > maximunContainerCapacity && !getIsFull()) {
+    if (currentCapacity + quatity > maximunContainerCapacity) {
       spare = (currentCapacity + quatity) - maximunContainerCapacity;
       currentCapacity = maximunContainerCapacity;
       System.out.println("Se ha ingresado al contenedor de " + getProduct() + " " + (quatity - spare) + " unidades");

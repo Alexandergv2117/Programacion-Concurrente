@@ -22,7 +22,7 @@ public class Customer extends Thread{
   public void run() {
     while (!isFullShoppingList) {
       try {
-        if (store.isFullContainers) {
+        if (store.getIsFullContainers()) {
           semaphore.acquire();
           System.out.println("####################################################################");
           System.out.println("\nEl cliente " + name + " ha entrado a la tienda");
