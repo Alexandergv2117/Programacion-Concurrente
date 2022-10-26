@@ -24,8 +24,8 @@ public class Providers extends Thread {
   public void run() {
     while (true) {
       try {
+        semaphore.acquire();
         if (store.getIsFullEntryProviders() && !store.getIsFullContainers()) {
-          semaphore.acquire();
           store.setIsFullEntryProviders(false);
           System.out.println("-------------------------------------------------------------");
           System.out.println("\nEl proveedor " + name + " ha entrado a la tienda");
@@ -34,8 +34,8 @@ public class Providers extends Thread {
           }
           System.out.println("\nEl proveedor " + name + " ha salido de la tienda");
           store.setIsFullEntryProviders(true);
-          semaphore.release();
         }
+        semaphore.release();
         sleep(1000);
       } catch (InterruptedException e) {
         e.printStackTrace();

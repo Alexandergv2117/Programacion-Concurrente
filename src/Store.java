@@ -35,7 +35,7 @@ public class Store {
           if (!containers[j].retireProduct(quantity[i], name)){
             fullShoppingList = false;
             containers[j].setIsFull(false);
-            setIsFullContainers(fullShoppingList);
+            setIsFullContainers(false);
           }
         }
       }

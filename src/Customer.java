@@ -1,12 +1,12 @@
 import java.util.concurrent.Semaphore;
 
-public class Customer extends Thread{
+public class Customer extends Thread {
   String name;
   String[] products;
   double[] quantityToBuy;
   boolean isFullShoppingList = false;
   int productsLength;
-  
+
   Store store;
   Semaphore semaphore;
 
@@ -22,16 +22,16 @@ public class Customer extends Thread{
   public void run() {
     while (!isFullShoppingList) {
       try {
-        if (store.getIsFullContainers()) {
-          semaphore.acquire();
-          System.out.println("####################################################################");
-          System.out.println("\nEl cliente " + name + " ha entrado a la tienda");
-          isFullShoppingList = store.buyProducts(name, products, quantityToBuy);
-          System.out.println("\nEl cliente " + name + " ha salido de la tienda");
-          semaphore.release();
-        }
-        sleep(1000);
-      } catch (Exception e) {
+      semaphore.acquire();
+      if (store.isFullContainers) {
+        System.out.println("####################################################################");
+        System.out.println("\nEl cliente " + name + " ha entrado a la tienda");
+        isFullShoppingList = store.buyProducts(name, products, quantityToBuy);
+        System.out.println("\nEl cliente " + name + " ha salido de la tienda");
+      }
+      semaphore.release();
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
