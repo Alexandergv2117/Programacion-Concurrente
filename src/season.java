@@ -9,9 +9,12 @@ public class season {
     public season(int season) {
       currentSeason = seasons[season];
       currentMultiplier = multiplier[season];
+
+      System.out.println("La temporada actual es: " + currentSeason + " con un multiplicador de: " + currentMultiplier + "x\n");
     }
   
     public void setChangeSeason() {
+      System.out.println("\n\n\nCambiando de estación...");
       for (int i = 0; i < seasonLength; i++) {
         if (currentSeason.equals(seasons[i])) {
           if (i == seasonLength - 1) {
@@ -24,6 +27,7 @@ public class season {
           break;
         }
       }
+      System.out.println("La temporada actual es: " + currentSeason + " con un multiplicador de: " + currentMultiplier + "x\n\n\n");
     }
   
     public String getCurrentSeason() {

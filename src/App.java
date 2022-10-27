@@ -4,7 +4,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         Semaphore semaphore = new Semaphore(1);
         season season = new season(0);
-        Store store = new Store();
+        Store store = new Store(season);
 
         Providers provider1 = new Providers("Juan", new String[] { "Frijol", "Arroz" }, new double[] { 4, 6 }, store, season, semaphore);
         Providers provider2 = new Providers("Pedro", new String[] { "Frijol", "Maiz" }, new double[] { 4, 3 }, store, season, semaphore);

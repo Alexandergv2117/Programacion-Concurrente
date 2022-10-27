@@ -3,10 +3,15 @@ public class Store {
   String[] products = {"Frijol", "Arroz", "Maiz"};
   double capacities = 10.0;
 
+  int buyers = 0;
+
   boolean isFullContainers = false;
   boolean isFullEntryProviders = true;
 
-  public Store() {
+  season Season;
+
+  public Store(season Season) {
+    this.Season = Season;
     for (int i = 0; i < containers.length; i++) {
       containers[i] = new Container(products[i], capacities);
     }
@@ -15,7 +20,8 @@ public class Store {
   public void addProductToContainer(String product, double quantity, String provider) {
     for (int i = 0; i < containers.length; i++) {
       if ((containers[i].getProduct().equals(product)) && (!containers[i].getIsFull())) {
-        System.out.println("\nEl proveedor " + provider + " esta ingresando " + product + " al contenedor");
+        System.out.println("\nEl proveedor " + provider + " esta ingresando " + product + " al contenedor, cantidad: "
+            + quantity);
         quantity = containers[i].addProduct(quantity);
       } else if (containers[i].getProduct().equals(product) && containers[i].getIsFull()) {
         System.out.println("El contenedor de " + product + " está lleno");
@@ -46,8 +52,14 @@ public class Store {
       System.out.println("No se pudo completar la compra de " + name);
       return false;
     }
+    buyers++;
 
-    System.out.println("Se ha completado la compra de " + name);
+    System.out.println("Se ha completado la compra de " + name + " con éxito" + "\n" + "Cantidad de compradores: " + buyers);
+    
+    if (buyers == 4) {
+      Season.setChangeSeason();
+      buyers = 0;
+    }
     return fullShoppingList;
   }
 
@@ -80,7 +92,7 @@ public class Store {
     boolean puedeEntrar = true;
     for (int i = 0; i < containers.length; i++) {
       for (int j = 0; j < Products.length; j++) {
-        if (containers[i].getProduct().equals(Products[j]) && !containers[i].getIsFull()){
+        if (containers[i].getProduct().equals(Products[j]) && !containers[i].getIsFull()) {
           puedeEntrar = false;
         }
       }
