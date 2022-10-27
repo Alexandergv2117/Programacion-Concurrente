@@ -24,7 +24,7 @@ public class Customer extends Thread {
       try {
       semaphore.acquire();
       if (store.isFullContainers) {
-        System.out.println("####################################################################");
+        System.out.println("\n#########################  CLIENTE  #########################");
         System.out.println("\nEl cliente " + name + " ha entrado a la tienda");
         isFullShoppingList = store.buyProducts(name, products, quantityToBuy);
         System.out.println("\nEl cliente " + name + " ha salido de la tienda");

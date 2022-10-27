@@ -24,7 +24,7 @@ public class Store {
     setIsFullContainers(ContainersAreFull());
   }
 
-  public synchronized boolean buyProducts(String name, String[] products, double[] quantity) {
+  public boolean buyProducts(String name, String[] products, double[] quantity) {
     int productsLength = products.length;
     int containersLength = containers.length;
     boolean fullShoppingList = true;
@@ -74,5 +74,17 @@ public class Store {
 
   public boolean getIsFullEntryProviders() {
     return isFullEntryProviders;
+  }
+
+  public boolean isFullContainers(String[] Products){
+    boolean puedeEntrar = true;
+    for (int i = 0; i < containers.length; i++) {
+      for (int j = 0; j < Products.length; j++) {
+        if (containers[i].getProduct().equals(Products[j]) && !containers[i].getIsFull()){
+          puedeEntrar = false;
+        }
+      }
+    }
+    return puedeEntrar;
   }
 }
