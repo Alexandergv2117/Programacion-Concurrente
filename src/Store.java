@@ -55,11 +55,7 @@ public class Store {
     buyers++;
 
     System.out.println("Se ha completado la compra de " + name + " con éxito" + "\n" + "Cantidad de compradores: " + buyers);
-    
-    if (buyers == 4) {
-      Season.setChangeSeason();
-      buyers = 0;
-    }
+
     return fullShoppingList;
   }
 
@@ -98,5 +94,13 @@ public class Store {
       }
     }
     return puedeEntrar;
+  }
+
+  public int getBuyers() {
+    return buyers;
+  }
+
+  public void setBuyers(int resetBuyers) {
+    this.buyers = resetBuyers;
   }
 }
