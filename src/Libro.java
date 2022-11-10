@@ -49,11 +49,13 @@ public class Libro {
     System.out.println("El lector ha leido de la palabra " + palabrasLeidas + "/" + palabrasTotales + " a la palabra "
         + palabrasEscritas + "/" + palabrasTotales + "\n\n");
 
+    palabrasLeidas = palabrasEscritas;
+
     if (palabrasLeidas >= palabrasTotales) {
       System.out.println(nombreLector + " ha termiando de leer el libro\n\n");
     }
 
     notify();
-    return palabrasEscritas;
+    return palabrasLeidas;
   }
 }
