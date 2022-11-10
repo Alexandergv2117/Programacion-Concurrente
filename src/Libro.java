@@ -46,8 +46,8 @@ public class Libro {
     }
     System.out.println("#########################  LECTOR  #########################");
     System.out.println(nombreLector + " está leyendo...");
-    System.out.println("El lector ha leido de la palabra" + palabrasLeidas + "/" + palabrasTotales + " a la palabra "
-        + (palabrasLeidas + palabrasEscritas) + "/" + palabrasTotales + "\n\n");
+    System.out.println("El lector ha leido de la palabra " + palabrasLeidas + "/" + palabrasTotales + " a la palabra "
+        + palabrasEscritas + "/" + palabrasTotales + "\n\n");
 
     if (palabrasLeidas >= palabrasTotales) {
       System.out.println(nombreLector + " ha termiando de leer el libro\n\n");
