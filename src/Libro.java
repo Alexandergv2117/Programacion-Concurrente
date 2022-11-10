@@ -13,6 +13,7 @@ public class Libro {
     if (libroEscrito) {
       return false;
     }
+    System.out.println("#########################  ESCRITOR  #########################");
     System.out
         .println("\n" + nombreEscritor + " está escribiendo de la palabra " + palabrasEscritas + "/" + palabrasTotales
             + " a la palabra "
@@ -24,10 +25,10 @@ public class Libro {
     if (palabrasEscritas >= palabrasTotales) {
       palabrasEscritas = palabrasTotales;
       libroEscrito = true;
-      System.out.println("El libro se ha termiando de escribir por " + nombreEscritor);
+      System.out.println("El libro se ha termiando de escribir por " + nombreEscritor + "\n\n");
       return true;
     } else {
-      System.out.println(nombreEscritor + " ha escrito " + palabras_a_escribir + " palabras");
+      System.out.println(nombreEscritor + " ha escrito " + palabras_a_escribir + " palabras\n\n");
     }
 
     notify();
@@ -43,13 +44,13 @@ public class Libro {
         e.printStackTrace();
       }
     }
-
+    System.out.println("#########################  LECTOR  #########################");
     System.out.println(nombreLector + " está leyendo...");
     System.out.println("El lector ha leido de la palabra" + palabrasLeidas + "/" + palabrasTotales + " a la palabra "
-        + (palabrasLeidas + palabrasEscritas) + "/" + palabrasTotales);
+        + (palabrasLeidas + palabrasEscritas) + "/" + palabrasTotales + "\n\n");
 
     if (palabrasLeidas >= palabrasTotales) {
-      System.out.println("El libro se ha termiando de leer");
+      System.out.println(nombreLector + " ha termiando de leer el libro\n\n");
     }
 
     notify();
