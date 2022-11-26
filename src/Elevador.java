@@ -30,16 +30,29 @@ public class Elevador extends Thread {
         llamarElevador(pisoDestino);
       }
 
-      if (getPisoActual() == hotel.getTotalPisos()) {
+      if (getPisoActual() == getPisoDestino() && getPisoDestino() != 0) {
         setPisoDestino(0);
+        System.out.println("Elevador llego al destino");
+        abrirPuertaDelElevador();
       }
 
-      if (getPisoActual() < getPisoDestino()) {
+      if (getPisoActual() == hotel.getTotalPisos()) {
+        setBajando(true);
+        setSubiendo(false);
+      }
+
+      if (getPisoActual() == 0 && isBajando()) {
+        setSubiendo(false);
+        setBajando(false);
+        setEnReposo(true);
+      }
+
+      if (isSubiendo()) {
         subirElevador();
         delay(500);
       }
 
-      if (getPisoActual() > getPisoDestino()) {
+      if (isBajando()) {
         bajarElevador();
         delay(500);
       }
@@ -55,39 +68,29 @@ public class Elevador extends Thread {
   }
 
   public synchronized void subirElevador() {
-    if (hotel.getTotalPisos() <= getPisoActual()) {
-      System.out.println("El elevador llego al ultimo piso del hotel");
-      setSubiendo(false);
-      setBajando(true);
-      System.out.println("El elevador esta bajando");
-      return;
-    }
-
     this.pisoActual++;
-    System.out.println("\nEl elevador esta en el piso: " + getPisoActual());
-    System.out.println("El elevador esta subiendo");
+    System.out.println("\nEl elevador esta subiendo");
+    System.out.println("El elevador esta en el piso: " + getPisoActual());
+
+    if (hotel.getTotalPisos() == getPisoActual()) {
+      System.out.println("\nEl elevador llego al ultimo piso del hotel");
+    }
   }
 
   public synchronized void bajarElevador() {
-    if (pisoActual <= 0) {
-      System.out.println("El elevador llego al primer piso del hotel: " + getPisoActual());
-      setBajando(false);
-      setSubiendo(false);
-      setEnReposo(true);
-      return;
-    }
-
     this.pisoActual--;
-    System.out.println("\nEl elevador esta en el piso: " + getPisoActual());
-    System.out.println("El elevador esta bajando");
+    System.out.println("\nEl elevador esta bajando");
+    System.out.println("El elevador esta en el piso: " + getPisoActual());
+
+    if (pisoActual == 0) {
+      System.out.println("\nEl elevador llego al primer piso del hotel: " + getPisoActual());
+    }
   }
 
   public synchronized void abrirPuertaDelElevador() {
     setPuertaAbierta(true);
     System.out.println("Puerta abierta");
-  }
-
-  public synchronized void cerrarPuertaDelElevador() {
+    delay(1000);
     setPuertaAbierta(false);
     System.out.println("Puerta cerrada");
   }
@@ -98,7 +101,6 @@ public class Elevador extends Thread {
       System.out.println("Persona entrando al elevador");
     } else {
       System.out.println("No hay espacio en el elevador");
-      return;
     }
   }
 
@@ -108,7 +110,6 @@ public class Elevador extends Thread {
       System.out.println("Persona saliendo del elevador");
     } else {
       System.out.println("No hay personas en el elevador");
-      return;
     }
   }
 
@@ -118,7 +119,6 @@ public class Elevador extends Thread {
       setSubiendo(true);
       setBajando(false);
       setEnReposo(false);
-      setPisoDestino(hotel.getTotalPisos());
 
       System.out.println("Llamando al elevador para subir al piso: " + pisoDestino);
     }
@@ -127,7 +127,6 @@ public class Elevador extends Thread {
       setBajando(true);
       setSubiendo(false);
       setEnReposo(false);
-      setPisoDestino(0);
 
       System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
     }
