@@ -1,4 +1,4 @@
-public class Elevador extends Thread{
+public class Elevador extends Thread {
   int capacidadMaxima;
   int capacidadActual;
   int pisoActual;
@@ -9,7 +9,9 @@ public class Elevador extends Thread{
   boolean bajando;
   boolean enReposo;
 
-  public Elevador(int capacidadMaxima) {
+  Hotel hotel;
+
+  public Elevador(int capacidadMaxima, Hotel hotel) {
     this.capacidadMaxima = capacidadMaxima;
     this.capacidadActual = 0;
     this.pisoActual = 0;
@@ -17,21 +19,29 @@ public class Elevador extends Thread{
     this.subiendo = false;
     this.bajando = false;
     this.enReposo = true;
+    this.hotel = hotel;
   }
 
   public void run() {
     while (true) {
-      if (this.pisoDestino > this.pisoActual) {
-        subirElevador(pisoDestino);
-        abrirPuertaDelElevador();
-        delay(1000);
-        cerrarPuertaDelElevador();
+      if (this.enReposo) {
+        this.pisoDestino = (int) (Math.random() * this.hotel.totalPisos);
+        System.out.println("Elevador en reposo, destino: " + this.pisoDestino);
+        llamarElevador(pisoDestino);
       }
-      if (this.pisoDestino < this.pisoActual) {
-        bajarElevador(pisoDestino);
-        abrirPuertaDelElevador();
-        delay(1000);
-        cerrarPuertaDelElevador();
+
+      if (this.pisoActual == hotel.totalPisos) {
+        this.pisoDestino = 0;
+      }
+
+      if (this.pisoActual < this.pisoDestino) {
+        subirElevador();
+        delay(500);
+      }
+
+      if (this.pisoActual > this.pisoDestino) {
+        bajarElevador();
+        delay(500);
       }
     }
   }
@@ -44,26 +54,32 @@ public class Elevador extends Thread{
     }
   }
 
-  public synchronized void subirElevador( int pisoDestino) {
-    if (pisoDestino > this.pisoActual) {
-      System.out.println("\nSubiendo al piso: " + (this.pisoActual + 1));
-      this.subiendo = true;
-      this.bajando = false;
-      this.enReposo = false;
-      this.pisoActual++;
-      System.out.println("El elevador esta en el piso: " + this.pisoActual);
+  public synchronized void subirElevador() {
+    if (hotel.totalPisos <= pisoActual) {
+      System.out.println("El elevador llego al ultimo piso del hotel");
+      subiendo = false;
+      bajando = true;
+      System.out.println("El elevador esta bajando");
+      return;
     }
+
+    this.pisoActual++;
+    System.out.println("\nEl elevador esta en el piso: " + this.pisoActual);
+    System.out.println("El elevador esta subiendo");
   }
 
-  public synchronized void bajarElevador(int pisoDestino) {
-    if (this.pisoActual > pisoDestino) {
-      System.out.println("\nBajando al piso: " + (this.pisoActual - 1));
-      this.subiendo = false;
-      this.bajando = true;
-      this.enReposo = false;
-      this.pisoActual--;
-      System.out.println("El elevador esta en el piso: " + this.pisoActual);
+  public synchronized void bajarElevador() {
+    if (pisoActual <= 0) {
+      System.out.println("El elevador llego al primer piso del hotel: " + this.pisoActual);
+      bajando = false;
+      subiendo = false;
+      enReposo = true;
+      return;
     }
+
+    this.pisoActual--;
+    System.out.println("\nEl elevador esta en el piso: " + this.pisoActual);
+    System.out.println("El elevador esta bajando");
   }
 
   public synchronized void abrirPuertaDelElevador() {
@@ -98,5 +114,22 @@ public class Elevador extends Thread{
 
   public synchronized void llamarElevador(int pisoDestino) {
     this.pisoDestino = pisoDestino;
+    if (this.pisoDestino > this.pisoActual) {
+      subiendo = true;
+      bajando = false;
+      enReposo = false;
+      this.pisoDestino = hotel.totalPisos;
+
+      System.out.println("Llamando al elevador para subir al piso: " + pisoDestino);
+    }
+
+    if (this.pisoDestino < this.pisoActual) {
+      subiendo = false;
+      bajando = true;
+      enReposo = false;
+      this.pisoDestino = 0;
+
+      System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
+    }
   }
 }
