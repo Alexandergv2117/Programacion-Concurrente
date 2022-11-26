@@ -4,4 +4,8 @@ public class Hotel {
   public Hotel(int totalPisos) {
     this.totalPisos = totalPisos;
   }
+
+  public int getTotalPisos() {
+    return this.totalPisos;
+  }
 }
