@@ -6,8 +6,7 @@ public class Viaje extends Thread {
   int totalPersonas;
   boolean[] llegoAlDestino;
   boolean[] enElAscensor;
-  boolean[] sube;
-  boolean[] baja;
+  boolean[] sentido; // false = sube, true = baja
   boolean terminoViaje = false;
 
   Hotel hotel;
@@ -24,33 +23,27 @@ public class Viaje extends Thread {
     this.pisoDestino = new int[totalPersonas];
     this.llegoAlDestino = new boolean[totalPersonas];
     this.enElAscensor = new boolean[totalPersonas];
-    this.sube = new boolean[totalPersonas];
-    this.baja = new boolean[totalPersonas];
+    this.sentido = new boolean[totalPersonas];
 
     for (int i = 0; i < totalPersonas; i++) {
       this.nombres[i] = nombreViaje + ": Persona " + i;
-      this.pisoOrigen[i] = (int) (Math.random() * hotel.getTotalPisos());
+      this.pisoOrigen[i] = (int) (Math.random() * hotel.getTotalPisos()) + 1;
+      
       this.pisoDestino[i] = (int) (Math.random() * hotel.getTotalPisos());
       this.llegoAlDestino[i] = false;
       this.enElAscensor[i] = false;
-
-      if (this.pisoOrigen[i] < this.pisoDestino[i]) {
-        this.sube[i] = true;
-        this.baja[i] = false;
-      } else {
-        this.sube[i] = false;
-        this.baja[i] = true;
-      }
+      this.sentido[i] = this.pisoOrigen[i] < this.pisoDestino[i] ? false : true;
+      System.out.println(this.nombres[i] + " va del piso " + this.pisoOrigen[i] + " al piso " + this.pisoDestino[i] + " y su sentido es " + (this.sentido[i] ? "bajar" : "subir"));
     }
   }
 
   public void run() {
     while (!terminoViaje) {
       for (int i = 0; i < totalPersonas; i++) {
-        if (elevador.getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && elevador.capacidadActual < elevador.capacidadMaxima) {
+        if (this.sentido[i] == elevador.sentido && elevador.getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && elevador.capacidadActual < elevador.capacidadMaxima) {
           this.enElAscensor[i] = true;
           elevador.subirPersona();
-          System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i]);
+          System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
         }
 
         if (elevador.getPisoActual() == pisoDestino[i] && !llegoAlDestino[i] && enElAscensor[i]) {
@@ -61,7 +54,7 @@ public class Viaje extends Thread {
       }
 
       for (int i = 0; i < totalPersonas; i++) {
-        if (!llegoAlDestino[i]) {
+        if (!llegoAlDestino[i] && elevador.isEnReposo()) {
           elevador.llamarElevador(pisoOrigen[i]);
           break;
         }

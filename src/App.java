@@ -6,8 +6,10 @@ public class App {
         Hotel hotel = new Hotel(15);
         Elevador elevador = new Elevador(10, hotel);
         Viaje viaje = new Viaje(hotel, "Viaje 1", elevador);
+        Viaje viaje2 = new Viaje(hotel, "Viaje 2", elevador);
 
         elevador.start();
         viaje.start();
+        viaje2.start();
     }
 }

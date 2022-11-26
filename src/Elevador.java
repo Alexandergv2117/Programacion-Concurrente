@@ -8,6 +8,7 @@ public class Elevador extends Thread {
   boolean subiendo;
   boolean bajando;
   boolean enReposo;
+  boolean sentido = false; // false = sube, true = baja
 
   Hotel hotel;
 
@@ -24,20 +25,16 @@ public class Elevador extends Thread {
 
   public void run() {
     while (true) {
-      if (getPisoActual() == getPisoDestino() && getPisoDestino() != 0) {
-        setPisoDestino(0);
-        System.out.println("Elevador llego al destino");
-      }
-
       if (getPisoActual() == hotel.getTotalPisos()) {
         setBajando(true);
         setSubiendo(false);
+        setSentido(true);
       }
 
       if (getPisoActual() == 0 && isBajando()) {
-        setSubiendo(false);
         setBajando(false);
         setEnReposo(true);
+        setSentido(false);
       }
 
       if (isSubiendo()) {
@@ -204,5 +201,13 @@ public class Elevador extends Thread {
 
   public void setPisoActual(int pisoActual) {
     this.pisoActual = pisoActual;
+  }
+
+  public void setSentido(boolean sentido) {
+    this.sentido = sentido;
+  }
+
+  public boolean getSentido() {
+    return this.sentido;
   }
 }
