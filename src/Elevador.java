@@ -24,16 +24,9 @@ public class Elevador extends Thread {
 
   public void run() {
     while (true) {
-      if (isEnReposo()) {
-        setPisoDestino((int) (Math.random() * hotel.getTotalPisos()));
-        System.out.println("Elevador en reposo, destino: " + getPisoDestino());
-        llamarElevador(pisoDestino);
-      }
-
       if (getPisoActual() == getPisoDestino() && getPisoDestino() != 0) {
         setPisoDestino(0);
         System.out.println("Elevador llego al destino");
-        abrirPuertaDelElevador();
       }
 
       if (getPisoActual() == hotel.getTotalPisos()) {
@@ -49,11 +42,17 @@ public class Elevador extends Thread {
 
       if (isSubiendo()) {
         subirElevador();
+        abrirPuertaDelElevador();
+        delay(1000);
+        cerrarPuertaDelElevador();
         delay(500);
       }
 
       if (isBajando()) {
         bajarElevador();
+        abrirPuertaDelElevador();
+        delay(1000);
+        cerrarPuertaDelElevador();
         delay(500);
       }
     }
@@ -89,13 +88,15 @@ public class Elevador extends Thread {
 
   public synchronized void abrirPuertaDelElevador() {
     setPuertaAbierta(true);
-    System.out.println("Puerta abierta");
-    delay(1000);
-    setPuertaAbierta(false);
-    System.out.println("Puerta cerrada");
+    System.out.println("\n---------- PUERTA ABRIERTA ---------\n");
   }
 
-  public synchronized void entrarPersona() {
+  public synchronized void cerrarPuertaDelElevador() {
+    setPuertaAbierta(false);
+    System.out.println("\n---------- PUERTA CERRADA ----------\n");
+  }
+
+  public synchronized void subirPersona() {
     if (getCapacidadActual() <= getCapacidadMaxima()) {
       this.capacidadActual++;
       System.out.println("Persona entrando al elevador");
@@ -104,7 +105,7 @@ public class Elevador extends Thread {
     }
   }
 
-  public synchronized void salirPersona() {
+  public synchronized void bajarPersona() {
     if (getCapacidadActual() > 0) {
       this.capacidadActual--;
       System.out.println("Persona saliendo del elevador");
@@ -114,6 +115,13 @@ public class Elevador extends Thread {
   }
 
   public synchronized void llamarElevador(int pisoDestino) {
+    if (!isEnReposo()) return;
+
+    if (pisoDestino == getPisoActual()) {
+      System.out.println("El elevador ya esta en el piso destino");
+      return;
+    }
+
     setPisoDestino(pisoDestino);
     if (getPisoDestino() > getPisoActual()) {
       setSubiendo(true);
@@ -121,6 +129,7 @@ public class Elevador extends Thread {
       setEnReposo(false);
 
       System.out.println("Llamando al elevador para subir al piso: " + pisoDestino);
+      return;
     }
 
     if (getPisoDestino() < getPisoActual()) {
@@ -129,6 +138,7 @@ public class Elevador extends Thread {
       setEnReposo(false);
 
       System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
+      return;
     }
   }
 
