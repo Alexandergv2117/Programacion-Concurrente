@@ -1,25 +1,19 @@
 public class Elevador extends Thread {
   int capacidadMaxima;
-  int capacidadActual;
-  int pisoActual;
+  int capacidadActual = 0;
+  int pisoActual = 0;
   int pisoDestino;
 
-  boolean puertaAbierta;
-  boolean subiendo;
-  boolean bajando;
-  boolean enReposo;
+  boolean puertaAbierta = false;
+  boolean subiendo = false;
+  boolean bajando = false;
+  boolean enReposo = true;
   boolean sentidoElevador = false; // false = sube, true = baja
 
   Hotel hotel;
 
   public Elevador(int capacidadMaxima, Hotel hotel) {
     this.capacidadMaxima = capacidadMaxima;
-    this.capacidadActual = 0;
-    this.pisoActual = 0;
-    this.puertaAbierta = false;
-    this.subiendo = false;
-    this.bajando = false;
-    this.enReposo = true;
     this.hotel = hotel;
   }
 
@@ -97,28 +91,19 @@ public class Elevador extends Thread {
   public synchronized void subirPersona() {
     if (getCapacidadActual() <= getCapacidadMaxima()) {
       this.capacidadActual++;
-      System.out.println("Persona entrando al elevador");
-    } else {
-      System.out.println("No hay espacio en el elevador");
+      System.out.println("\nPersona entrando al elevador");
     }
   }
 
   public synchronized void bajarPersona() {
     if (getCapacidadActual() > 0) {
       this.capacidadActual--;
-      System.out.println("Persona saliendo del elevador");
-    } else {
-      System.out.println("No hay personas en el elevador");
+      System.out.println("\nPersona saliendo del elevador");
     }
   }
 
   public synchronized void llamarElevador(int pisoDestino) {
     if (!isEnReposo()) return;
-
-    if (pisoDestino == getPisoActual()) {
-      System.out.println("El elevador ya esta en el piso destino");
-      return;
-    }
 
     setPisoDestino(pisoDestino);
     if (getPisoDestino() > getPisoActual()) {
@@ -140,47 +125,47 @@ public class Elevador extends Thread {
     }
   }
 
-  public synchronized boolean validarPersonasEnDestino(boolean[] llegoAlDestino) {
+  public synchronized boolean validarPersonasEnDestino(Persona[] personas) {
     boolean terminoViaje = false;
-    for (int i = 0; i < llegoAlDestino.length; i++ ) {
-      if (llegoAlDestino[i]) {
+    for (int i = 0; i < personas.length; i++ ) {
+      if (personas[i].llegoAlDestino) {
         terminoViaje = true;
       } else {
         terminoViaje = false;
         break;
       }
-    }
+    } 
 
     return terminoViaje;
   }
 
-  public synchronized void llamarElevadorDesdePiso(boolean[] llegoAlDestino, int[] pisoOrigen) {
-    for (int i = 0; i < llegoAlDestino.length; i++) {
-      if (!llegoAlDestino[i] && isEnReposo()) {
-        llamarElevador(pisoOrigen[i]);
+  public synchronized void llamarElevadorDesdePiso(Persona[] personas) {
+    for (int i = 0; i < personas.length; i++) {
+      if (!personas[i].llegoAlDestino && isEnReposo()) {
+        llamarElevador(personas[i].pisoOrigen);
         return;
       }
     }
   }
 
-  public synchronized void subirBajarPersonas(boolean[] sentido, boolean[] enElAscensor, int[] pisoOrigen, int[] pisoDestino , boolean[] llegoAlDestino, String[] nombres)  {
-    for (int i = 0; i < nombres.length; i++) {
-      if (sentido[i] == sentidoElevador && getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && capacidadActual < capacidadMaxima) {
-        enElAscensor[i] = true;
+  public synchronized void subirBajarPersonas(Persona[] personas)  {
+    for (int i = 0; i < personas.length; i++) {
+      if (personas[i].sentido == sentidoElevador && getPisoActual() == personas[i].pisoOrigen && !personas[i].llegoAlDestino && !personas[i].enElAscensor && capacidadActual < capacidadMaxima) {
+        personas[i].enElAscensor = true;
         subirPersona();
-        System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
+        System.out.println("\n" + personas[i].nombre + " sube al elevador en el piso " + personas[i].pisoOrigen + " y va al piso " + personas[i].pisoDestino + " en el sentido " + (personas[i].sentido ? "bajando" : "subiendo"));
       }
 
-      if (getPisoActual() == 15 && getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && capacidadActual < capacidadMaxima) {
-        enElAscensor[i] = true;
+      if (getPisoActual() == 15 && getPisoActual() == personas[i].pisoOrigen && !personas[i].llegoAlDestino && !personas[i].enElAscensor && capacidadActual < capacidadMaxima) {
+        personas[i].enElAscensor = true;
         subirPersona();
-        System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
+        System.out.println("\n" + personas[i].nombre + " sube al elevador en el piso " + personas[i].pisoOrigen + " y va al piso " + personas[i].pisoDestino + " en el sentido " + (personas[i].sentido ? "bajando" : "subiendo"));
       }
 
-      if (getPisoActual() == pisoDestino[i] && !llegoAlDestino[i] && enElAscensor[i]) {
-        System.out.println("\n" + nombres[i] + " baja del elevador en el piso " + pisoDestino[i]);
+      if (getPisoActual() == personas[i].pisoDestino && !personas[i].llegoAlDestino && personas[i].enElAscensor) {
         bajarPersona();
-        llegoAlDestino[i] = true;
+        System.out.println("\n" + personas[i].nombre + " baja del elevador en el piso " + personas[i].pisoDestino);
+        personas[i].llegoAlDestino = true;
       }
     }
   }
