@@ -5,8 +5,6 @@ public class Elevador extends Thread {
   int pisoDestino;
 
   boolean puertaAbierta = false;
-  boolean subiendo = false;
-  boolean bajando = false;
   boolean enReposo = true;
   boolean sentidoElevador = false; // false = sube, true = baja
 
@@ -19,27 +17,17 @@ public class Elevador extends Thread {
 
   public void run() {
     while (true) {
-      if (getPisoActual() == hotel.getTotalPisos()) {
-        setBajando(true);
-        setSubiendo(false);
-        setSentido(true);
-      }
+      if (getPisoActual() == hotel.getTotalPisos()) setSentidoElevador(true);
 
-      if (getPisoActual() == 0 && isBajando()) {
-        setBajando(false);
-        setEnReposo(true);
-        setSentido(false);
-      }
+      if (getPisoActual() == 0 && getSentidoElevador()) setEnReposo(true);
 
-      if (isSubiendo()) {
-        subirElevador();
-        delay(1000);
-        cerrarPuertaDelElevador();
-      }
-
-      if (isBajando()) {
-        bajarElevador();
-        delay(1000);
+      if (!isEnReposo()) {
+        if (getSentidoElevador()) {
+          bajarElevador();
+        } else {
+          subirElevador();
+        }
+        delay(500);
         cerrarPuertaDelElevador();
       }
     }
@@ -107,8 +95,7 @@ public class Elevador extends Thread {
 
     setPisoDestino(pisoDestino);
     if (getPisoDestino() > getPisoActual()) {
-      setSubiendo(true);
-      setBajando(false);
+      setSentidoElevador(false);
       setEnReposo(false);
 
       System.out.println("Llamando al elevador para subir al piso: " + pisoDestino);
@@ -116,8 +103,7 @@ public class Elevador extends Thread {
     }
 
     if (getPisoDestino() < getPisoActual()) {
-      setBajando(true);
-      setSubiendo(false);
+      setSentidoElevador(true);
       setEnReposo(false);
 
       System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
@@ -126,22 +112,18 @@ public class Elevador extends Thread {
   }
 
   public synchronized boolean validarPersonasEnDestino(Persona[] personas) {
-    boolean terminoViaje = false;
     for (int i = 0; i < personas.length; i++ ) {
-      if (personas[i].llegoAlDestino) {
-        terminoViaje = true;
-      } else {
-        terminoViaje = false;
-        break;
-      }
-    } 
+      if (!personas[i].llegoAlDestino) return false;
+    }
 
-    return terminoViaje;
+    return true;
   }
 
   public synchronized void llamarElevadorDesdePiso(Persona[] personas) {
+    if (!isEnReposo()) return;
+
     for (int i = 0; i < personas.length; i++) {
-      if (!personas[i].llegoAlDestino && isEnReposo()) {
+      if (!personas[i].llegoAlDestino) {
         llamarElevador(personas[i].pisoOrigen);
         return;
       }
@@ -194,28 +176,12 @@ public class Elevador extends Thread {
     return this.puertaAbierta;
   }
 
-  public boolean isSubiendo() {
-    return this.subiendo;
-  }
-
-  public boolean isBajando() {
-    return this.bajando;
-  }
-
   public boolean isEnReposo() {
     return this.enReposo;
   }
 
   public void setPuertaAbierta(boolean puertaAbierta) {
     this.puertaAbierta = puertaAbierta;
-  }
-
-  public void setSubiendo(boolean subiendo) {
-    this.subiendo = subiendo;
-  }
-
-  public void setBajando(boolean bajando) {
-    this.bajando = bajando;
   }
 
   public void setEnReposo(boolean enReposo) {
@@ -234,11 +200,11 @@ public class Elevador extends Thread {
     this.pisoActual = pisoActual;
   }
 
-  public void setSentido(boolean sentido) {
+  public void setSentidoElevador(boolean sentido) {
     this.sentidoElevador = sentido;
   }
 
-  public boolean getSentido() {
+  public boolean getSentidoElevador() {
     return this.sentidoElevador;
   }
 }
