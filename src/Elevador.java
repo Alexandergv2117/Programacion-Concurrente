@@ -8,7 +8,7 @@ public class Elevador extends Thread {
   boolean subiendo;
   boolean bajando;
   boolean enReposo;
-  boolean sentido = false; // false = sube, true = baja
+  boolean sentidoElevador = false; // false = sube, true = baja
 
   Hotel hotel;
 
@@ -39,18 +39,14 @@ public class Elevador extends Thread {
 
       if (isSubiendo()) {
         subirElevador();
-        abrirPuertaDelElevador();
         delay(1000);
         cerrarPuertaDelElevador();
-        delay(500);
       }
 
       if (isBajando()) {
         bajarElevador();
-        abrirPuertaDelElevador();
         delay(1000);
         cerrarPuertaDelElevador();
-        delay(500);
       }
     }
   }
@@ -67,6 +63,8 @@ public class Elevador extends Thread {
     this.pisoActual++;
     System.out.println("\nEl elevador esta subiendo");
     System.out.println("El elevador esta en el piso: " + getPisoActual());
+    System.out.println("Capacidad actual: " + getCapacidadActual());
+    abrirPuertaDelElevador();
 
     if (hotel.getTotalPisos() == getPisoActual()) {
       System.out.println("\nEl elevador llego al ultimo piso del hotel");
@@ -77,6 +75,8 @@ public class Elevador extends Thread {
     this.pisoActual--;
     System.out.println("\nEl elevador esta bajando");
     System.out.println("El elevador esta en el piso: " + getPisoActual());
+    System.out.println("Capacidad actual: " + getCapacidadActual());
+    abrirPuertaDelElevador();
 
     if (pisoActual == 0) {
       System.out.println("\nEl elevador llego al primer piso del hotel: " + getPisoActual());
@@ -91,6 +91,7 @@ public class Elevador extends Thread {
   public synchronized void cerrarPuertaDelElevador() {
     setPuertaAbierta(false);
     System.out.println("\n---------- PUERTA CERRADA ----------\n");
+    System.out.println("\n############################################################\n");
   }
 
   public synchronized void subirPersona() {
@@ -136,6 +137,51 @@ public class Elevador extends Thread {
 
       System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
       return;
+    }
+  }
+
+  public synchronized boolean validarPersonasEnDestino(boolean[] llegoAlDestino) {
+    boolean terminoViaje = false;
+    for (int i = 0; i < llegoAlDestino.length; i++ ) {
+      if (llegoAlDestino[i]) {
+        terminoViaje = true;
+      } else {
+        terminoViaje = false;
+        break;
+      }
+    }
+
+    return terminoViaje;
+  }
+
+  public synchronized void llamarElevadorDesdePiso(boolean[] llegoAlDestino, int[] pisoOrigen) {
+    for (int i = 0; i < llegoAlDestino.length; i++) {
+      if (!llegoAlDestino[i] && isEnReposo()) {
+        llamarElevador(pisoOrigen[i]);
+        return;
+      }
+    }
+  }
+
+  public synchronized void subirBajarPersonas(boolean[] sentido, boolean[] enElAscensor, int[] pisoOrigen, int[] pisoDestino , boolean[] llegoAlDestino, String[] nombres)  {
+    for (int i = 0; i < nombres.length; i++) {
+      if (sentido[i] == sentidoElevador && getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && capacidadActual < capacidadMaxima) {
+        enElAscensor[i] = true;
+        subirPersona();
+        System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
+      }
+
+      if (getPisoActual() == 15 && getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && capacidadActual < capacidadMaxima) {
+        enElAscensor[i] = true;
+        subirPersona();
+        System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
+      }
+
+      if (getPisoActual() == pisoDestino[i] && !llegoAlDestino[i] && enElAscensor[i]) {
+        System.out.println("\n" + nombres[i] + " baja del elevador en el piso " + pisoDestino[i]);
+        bajarPersona();
+        llegoAlDestino[i] = true;
+      }
     }
   }
 
@@ -204,10 +250,10 @@ public class Elevador extends Thread {
   }
 
   public void setSentido(boolean sentido) {
-    this.sentido = sentido;
+    this.sentidoElevador = sentido;
   }
 
   public boolean getSentido() {
-    return this.sentido;
+    return this.sentidoElevador;
   }
 }

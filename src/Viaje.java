@@ -39,35 +39,12 @@ public class Viaje extends Thread {
 
   public void run() {
     while (!terminoViaje) {
-      for (int i = 0; i < totalPersonas; i++) {
-        if (this.sentido[i] == elevador.sentido && elevador.getPisoActual() == pisoOrigen[i] && !llegoAlDestino[i] && !enElAscensor[i] && elevador.capacidadActual < elevador.capacidadMaxima) {
-          this.enElAscensor[i] = true;
-          elevador.subirPersona();
-          System.out.println("\n" + nombres[i] + " sube al elevador en el piso " + pisoOrigen[i] + " y va al piso " + pisoDestino[i] + " en el sentido " + (sentido[i] ? "bajando" : "subiendo"));
-        }
+      
+      elevador.subirBajarPersonas(sentido, enElAscensor, pisoOrigen, pisoDestino, llegoAlDestino, nombres);
 
-        if (elevador.getPisoActual() == pisoDestino[i] && !llegoAlDestino[i] && enElAscensor[i]) {
-          System.out.println("\n" + nombres[i] + " baja del elevador en el piso " + pisoDestino[i]);
-          elevador.bajarPersona();
-          llegoAlDestino[i] = true;
-        }
-      }
+      elevador.llamarElevadorDesdePiso(llegoAlDestino, pisoOrigen);
 
-      for (int i = 0; i < totalPersonas; i++) {
-        if (!llegoAlDestino[i] && elevador.isEnReposo()) {
-          elevador.llamarElevador(pisoOrigen[i]);
-          break;
-        }
-      }
-
-      for (int i = 0; i < totalPersonas; i++ ) {
-        if (llegoAlDestino[i]) {
-          terminoViaje = true;
-        } else {
-          terminoViaje = false;
-          break;
-        }
-      }
+      this.terminoViaje = elevador.validarPersonasEnDestino(llegoAlDestino);
     }
   }
 }
