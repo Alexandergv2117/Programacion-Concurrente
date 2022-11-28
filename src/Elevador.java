@@ -22,11 +22,9 @@ public class Elevador extends Thread {
       if (getPisoActual() == 0 && getSentidoElevador()) setEnReposo(true);
 
       if (!isEnReposo()) {
-        if (getSentidoElevador()) {
-          bajarElevador();
-        } else {
-          subirElevador();
-        }
+        if (getSentidoElevador()) bajarElevador();
+        else subirElevador();
+        
         delay(500);
         cerrarPuertaDelElevador();
       }
@@ -77,7 +75,7 @@ public class Elevador extends Thread {
   }
 
   public synchronized void subirPersona() {
-    if (getCapacidadActual() <= getCapacidadMaxima()) {
+    if (getCapacidadActual() < getCapacidadMaxima()) {
       this.capacidadActual++;
       System.out.println("\nPersona entrando al elevador");
     }
@@ -91,9 +89,8 @@ public class Elevador extends Thread {
   }
 
   public synchronized void llamarElevador(int pisoDestino) {
-    if (!isEnReposo()) return;
-
     setPisoDestino(pisoDestino);
+
     if (getPisoDestino() > getPisoActual()) {
       setSentidoElevador(false);
       setEnReposo(false);
@@ -107,7 +104,6 @@ public class Elevador extends Thread {
       setEnReposo(false);
 
       System.out.println("Llamando al elevador para bajar al piso: " + pisoDestino);
-      return;
     }
   }
 
@@ -131,6 +127,8 @@ public class Elevador extends Thread {
   }
 
   public synchronized void subirBajarPersonas(Persona[] personas)  {
+    if (!isPuertaAbierta()) return;
+
     for (int i = 0; i < personas.length; i++) {
       if (personas[i].sentido == sentidoElevador && getPisoActual() == personas[i].pisoOrigen && !personas[i].llegoAlDestino && !personas[i].enElAscensor && capacidadActual < capacidadMaxima) {
         personas[i].enElAscensor = true;
