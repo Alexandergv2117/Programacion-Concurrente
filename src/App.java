@@ -2,6 +2,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         Hotel hotel = new Hotel(15);
         Elevador elevador = new Elevador(8, hotel);
+        
         Viaje viaje = new Viaje(hotel, "Viaje 1", elevador);
         Viaje viaje2 = new Viaje(hotel, "Viaje 2", elevador);
         Viaje viaje3 = new Viaje(hotel, "Viaje 3", elevador);

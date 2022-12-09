@@ -7,10 +7,15 @@ public class Persona {
   boolean sentido; // false = sube, true = baja
   boolean terminoViaje = false;
 
-  public Persona(String nombre, int pisos) {
+  public Persona(String nombre, int pisosDelHotel) {
     this.nombre = nombre;
-    this.pisoOrigen = (int) (Math.random() * pisos) + 1;
-    this.pisoDestino = (int) (Math.random() * pisos);
+    this.pisoOrigen = (int) (Math.random() * pisosDelHotel) + 1;
+    this.pisoDestino = (int) (Math.random() * pisosDelHotel);
+
+    while (this.pisoOrigen == this.pisoDestino) {
+      this.pisoDestino = (int) (Math.random() * pisosDelHotel);
+    }
+
     this.llegoAlDestino = false;
     this.enElAscensor = false;
     this.sentido = this.pisoOrigen < this.pisoDestino ? false : true;
